@@ -262,9 +262,12 @@ class EHRBaseVersion(Exception):
 def compareEhrbaseVersions(runningversion,specificversion):
     if runningversion=='latest':
         return 1
-    if not runningversion[-1].isdigit():
+    nrv=runningversion
+    if '-' in runningversion:#-SNAPSHOT
+        nrv=runningversion[:runningversion.find('-')]
+    if not nrv[-1].isdigit():
         raise EHRBaseVersion()
-    rv=runningversion.split('.')
+    rv=nrv.split('.')
     sv=specificversion.split('.')
     for r,s in zip(rv,sv):
         if int(r)>int(s):
